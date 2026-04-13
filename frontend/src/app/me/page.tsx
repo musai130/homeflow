@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
+import { buildApiUrl } from "@/lib/api";
 
 interface MeResponse {
   id: string;
@@ -11,11 +12,6 @@ interface MeResponse {
 }
 
 export default function MePage() {
-  const apiUrl = useMemo(
-    () => process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001",
-    [],
-  );
-
   const [profile, setProfile] = useState<MeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +28,7 @@ export default function MePage() {
     setError(null);
 
     try {
-      const response = await fetch(`${apiUrl}/auth/me`, {
+      const response = await fetch(buildApiUrl("/auth/me"), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,7 +60,7 @@ export default function MePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [apiUrl]);
+  }, []);
 
   function logout() {
     localStorage.removeItem("accessToken");

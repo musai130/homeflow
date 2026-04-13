@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { API_BASE_URL } from "@/lib/api";
+import { buildApiUrl } from "@/lib/api";
 
 type HousingType = "Квартира" | "Дом" | "Офис";
 type PlanType = "1" | "2" | "4";
@@ -77,7 +77,7 @@ export default function OnboardingPage() {
         setIsCheckingEmail(true);
         try {
           const response = await fetch(
-            `${API_BASE_URL}/auth/check-email?email=${encodeURIComponent(email.trim())}`,
+            `${buildApiUrl("/auth/check-email")}?email=${encodeURIComponent(email.trim())}`,
           );
           if (!response.ok) {
             throw new Error("Не удалось проверить email");
@@ -136,7 +136,7 @@ export default function OnboardingPage() {
     };
 
     try {
-      const registerResponse = await fetch(`${API_BASE_URL}/auth/register`, {
+      const registerResponse = await fetch(buildApiUrl("/auth/register"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +161,7 @@ export default function OnboardingPage() {
         throw new Error(normalizeErrorMessage(message));
       }
 
-      const loginResponse = await fetch(`${API_BASE_URL}/auth/login`, {
+      const loginResponse = await fetch(buildApiUrl("/auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

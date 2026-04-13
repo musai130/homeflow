@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { buildApiUrl } from "@/lib/api";
 
 interface RegisterResponse {
   id: string;
@@ -23,10 +24,6 @@ function roleHome(role: UserRole | undefined): string {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const apiUrl = useMemo(
-    () => process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001",
-    [],
-  );
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -55,7 +52,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${apiUrl}/auth/register`, {
+      const response = await fetch(buildApiUrl("/auth/register"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

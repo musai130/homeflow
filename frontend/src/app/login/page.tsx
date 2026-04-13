@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { buildApiUrl } from "@/lib/api";
 
 interface LoginResponse {
   accessToken: string;
@@ -23,10 +24,6 @@ function roleHome(role: LoginResponse["user"]["role"] | undefined): string {
 
 export default function LoginPage() {
   const router = useRouter();
-  const apiUrl = useMemo(
-    () => process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001",
-    [],
-  );
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +44,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${apiUrl}/auth/login`, {
+      const response = await fetch(buildApiUrl("/auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

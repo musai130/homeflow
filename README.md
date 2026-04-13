@@ -102,6 +102,12 @@ NEXT_TELEMETRY_DISABLED=1
 NEXT_PUBLIC_API_URL=https://<your-backend-domain>
 ```
 
+For Docker-based Railway deploys, also add a frontend Docker Build Arg so this value is available at build time:
+
+```text
+NEXT_PUBLIC_API_URL=https://<your-backend-domain>
+```
+
 Notes:
 
 - Frontend Docker production command already listens on `PORT` (Railway-compatible).

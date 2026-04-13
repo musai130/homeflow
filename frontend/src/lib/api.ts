@@ -1,5 +1,16 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+const configuredApiBaseUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+
+export const API_BASE_URL = configuredApiBaseUrl
+  ? configuredApiBaseUrl.replace(/\/$/, '')
+  : '';
+
+export function buildApiUrl(path: string): string {
+  if (!API_BASE_URL) {
+    throw new Error('NEXT_PUBLIC_API_URL is not configured for frontend build');
+  }
+
+  return `${API_BASE_URL}${path}`;
+}
 
 export function getAccessToken(): string | null {
   if (typeof window === 'undefined') return null;
@@ -20,7 +31,7 @@ export async function fetchWithAuth(
     headers.set('Authorization', `Bearer ${token}`);
   }
 
-  return fetch(`${API_BASE_URL}${path}`, {
+  return fetch(buildApiUrl(path), {
     ...init,
     headers,
   });
