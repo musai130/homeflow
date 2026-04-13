@@ -71,6 +71,43 @@ DB_SYNC=true
 JWT_SECRET=dev_secret_change_me
 ```
 
+## Railway Deployment
+
+Railway usually deploys each app as a separate service (frontend and backend), plus a managed PostgreSQL service.
+
+1. Create `backend` service from this repo with root directory `backend`.
+2. Create `frontend` service from this repo with root directory `frontend`.
+3. Add PostgreSQL in Railway and copy its connection values to backend variables.
+
+Required backend variables:
+
+```text
+NODE_ENV=production
+PORT=<optional; Railway injects PORT automatically>
+DB_HOST=<railway-postgres-host>
+DB_PORT=<railway-postgres-port>
+DB_USER=<railway-postgres-user>
+DB_PASSWORD=<railway-postgres-password>
+DB_NAME=<railway-postgres-db>
+DB_SYNC=false
+JWT_SECRET=<long-random-secret>
+CORS_ORIGIN=https://<your-frontend-domain>
+```
+
+Required frontend variables:
+
+```text
+NODE_ENV=production
+NEXT_TELEMETRY_DISABLED=1
+NEXT_PUBLIC_API_URL=https://<your-backend-domain>
+```
+
+Notes:
+
+- Frontend Docker production command already listens on `PORT` (Railway-compatible).
+- Backend already listens on `process.env.PORT`.
+- `DB_SYNC=false` is recommended for production.
+
 ## Auth API
 
 Base URL: `http://localhost:3001`

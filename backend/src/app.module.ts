@@ -52,7 +52,7 @@ import { User } from './users/user.entity';
           Complaint,
         ],
         autoLoadEntities: true,
-        synchronize: configService.get<string>('DB_SYNC', 'true') === 'true',
+        synchronize: configService.get<string>('DB_SYNC', 'false') === 'true',
       }),
     }),
     UsersModule,
